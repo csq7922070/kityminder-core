@@ -4700,6 +4700,7 @@ _p[45] = {
             // hue from 1 to 5
             // jscs:disable maximumLineLength
             var BACK_PATH = "M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z";
+            //var BACK_PATH = 'm0.75,0.75l99,0l0,8l-99,0l0,-8z';
             var MASK_PATH = "M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z";
             var CORNER_MARK_DATA = "cornerMark";
             // 进度图标的图形
@@ -4712,7 +4713,8 @@ _p[45] = {
                     this.setId(utils.uuid("node_cornerMark"));
                 },
                 setSize: function(size) {
-                    this.width = this.height = size;
+                    this.width = size;
+                    this.height = size;
                 },
                 create: function() {
                     var white, back, mask, number;
@@ -4722,13 +4724,15 @@ _p[45] = {
                     mask = new kity.Path().setPathData(MASK_PATH).setOpacity(.8).setTranslate(.5, .5);
                     number = new kity.Text().setX(this.width / 2 - .5).setY(this.height / 2).setTextAnchor("middle").setVerticalAlign("middle").setFontItalic(true).setFontSize(12).fill("white");
                     this.addShapes([ back, mask, number ]);
+                    //this.addShapes([mask, number]);
                     this.mask = mask;
                     this.back = back;
                     this.number = number;
                 },
                 setValue: function(value) {
                     var back = this.back, mask = this.mask, number = this.number;
-                    var color = CORNER_MARK_COLORS[value];
+                    //var color = CORNER_MARK_COLORS[value];
+                    var color = [ "#ff0000", "#ff0000" ];
                     if (color) {
                         back.fill(color[1]);
                         mask.fill(color[0]);
@@ -4783,16 +4787,22 @@ _p[45] = {
                         },
                         update: function(icon, node, box) {
                             var data = node.getData(CORNER_MARK_DATA);
-                            var spaceLeft = node.getStyle("space-left"), x, y;
+                            var spaceLeft = node.getStyle("space-left"), spaceTop = node.getStyle("space-top"), x, y;
                             icon.setValue(data);
-                            x = box.left - icon.width - spaceLeft;
-                            y = -icon.height / 2;
+                            //x = box.left - icon.width - spaceLeft;
+                            //y = -icon.height / 2;
+                            x = box.right + icon.width / 2;
+                            y = -2 * spaceTop - icon.height / 2;
                             icon.setTranslate(x, y);
                             return new kity.Box({
-                                x: x,
-                                y: y,
-                                width: icon.width,
-                                height: icon.height
+                                //x: x,
+                                //y: y,
+                                x: 0,
+                                y: 0,
+                                //width: icon.width,
+                                //height: icon.height
+                                width: 0,
+                                height: 0
                             });
                         }
                     })

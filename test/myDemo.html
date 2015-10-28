@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="../dist/kityminder.core.css" rel="stylesheet">
 		<style type="text/css">
 			body {
 	            margin: 0;
@@ -70,11 +71,21 @@
 				var value = $("#corner-mark").val();
 				km.execCommand("cornerMark", value);
 			}
+
+			function appendChildNode(){
+				km.execCommand("AppendChildNode", "childNode");
+			}
+
+			function addImage(){
+				km.execCommand("Image", "file:///C:/Users/T440P/Documents/kityminder-core/bar.png", "333");
+			}
 		</script>
 	</head>
 	<body>
 		<button onclick="refreshMind()">refreshMind</button>
 		<button onclick="selectAll()">selectAll</button>
+		<button onclick="appendChildNode()">appendChildNode</button>
+		<button onclick="addImage()">addImage</button>
 		<br />
 		<input id="priority" type="text"/>
 		<button onclick="setPriority()">setPriority</button>

@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
     var pkg = grunt.file.readJSON('package.json');
 
@@ -81,12 +82,19 @@ module.exports = function(grunt) {
                 src: 'src/kityminder.css',
                 dest: "dist/kityminder.core.css"
             }
-        }
+        },
 
+		watch :{
+			files: ['src/**'],
+            tasks: ['build']
+		}
     });
 
 
     // Build task(s).
     grunt.registerTask('build', ['clean', 'dependence', 'concat:build', 'uglify:minimize', 'copy']);
+
+	// default task(s).
+    grunt.registerTask('default', ['build', 'watch']);
 
 };
