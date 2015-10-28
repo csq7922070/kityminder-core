@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style type="text/css">
+			body {
+	            margin: 0;
+	            padding: 0;
+	            height: 100%;
+	        }
+
+	        #minder-container {
+	            position: absolute;
+	            border: 1px solid #ccc;
+	            left: 10px;
+	            top: 100px;
+	            bottom: 10px;
+	            right: 10px;
+	        }
+		</style>
+		<script type="text/javascript" src="../bower_components/kity/dist/kity.min.js"></script>
+		<script type="text/javascript" src="../dist/kityminder.core.js"></script>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript">
+			var km;
+			var selectedNodes = [];
+			$(document).ready(function(){
+				km = new kityminder.Minder();
+    			km.setup('#minder-container');
+			});
+
+			function refreshMind(){
+				//var mindData = JSON.parse('{"root":{"data":{"text":"网站名称1"}}}');
+				var mindData = {
+					root: {
+						data: {
+							text: "Gridsum"
+						},
+						children: [
+							{
+								data: {text: "一级栏目"},
+								children: [
+									{data: {text: "二级栏目"}}
+								]
+							},
+							{data: {text: "一级栏目"}},
+							{data: {text: "一级栏目"}}
+						]
+					}
+				}
+				km.importJson(mindData);
+			}
+
+			function selectAll(){
+				selectedNodes = [];
+				km.getRoot().traverse(function(node){
+					selectedNodes.push(node);
+				});
+				km.select(selectedNodes, true);
+				console.log(selectedNodes);
+				console.log(km.getSelectedNodes());
+			}
+
+			function setPriority(){
+				var value = $("#priority").val();
+				km.execCommand("priority", value);
+			}
+
+			function setCornerMark(){
+				var value = $("#corner-mark").val();
+				km.execCommand("cornerMark", value);
+			}
+		</script>
+	</head>
+	<body>
+		<button onclick="refreshMind()">refreshMind</button>
+		<button onclick="selectAll()">selectAll</button>
+		<br />
+		<input id="priority" type="text"/>
+		<button onclick="setPriority()">setPriority</button>
+		<br />
+		<input id="corner-mark" type="text"/>
+		<button onclick="setCornerMark()">setCornerMark</button>
+		<div id="minder-container" type="application/kityminder" minder-data-type="json">
+			{
+	        	"root": {
+		            "data": {
+		                "text": "网站名称"
+		            },
+			        "children": [
+		                { "data": { "text": "新闻中心" } },
+		                { 
+		                	"data": { 
+		                		"text": "信息公开" 
+		                	} ,
+		                	"children": [
+		                		{"data":{"text": "信息公开"}},
+		                		{
+		                			"data":{"text": "信息公开"},
+		                			"children":[
+		                				{"data":{"text": "三级栏目"}},
+		                				{"data":{"text": "三级栏目"}},
+		                				{"data":{"text": "三级栏目"}}
+		                			]
+		                		},
+		                		{"data":{"text": "信息公开"}}
+		                	]
+		                },
+		                { 
+		                	"data": { "text": "信息公开" } ,
+		                	"children": [
+		                		{"data":{"text": "信息公开"}},
+		                		{"data":{"text": "信息公开"}}
+		                	]
+		                },
+		                { "data": { "text": "信息公开" } },
+		                { "data": { "text": "新闻中心" } },
+		                { "data": { "text": "信息公开" } },
+		                { "data": { "text": "信息公开" } },
+		                { "data": { "text": "信息公开" } }
+			        ]
+        		}
+    		}
+		</div>
+	</body>
+</html>
