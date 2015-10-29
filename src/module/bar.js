@@ -25,9 +25,7 @@ define(function(require, exports, module) {
         ]; // hue from 1 to 5
 
         // jscs:disable maximumLineLength
-        //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
 		var BACK_PATH = 'M 0,0 L 100,0 L 100,7 L 0,7 L 0,0 z';
-        var MASK_PATH = 'M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z';
 
         var BAR_DATA = 'bar';
 
@@ -54,17 +52,11 @@ define(function(require, exports, module) {
 				}
 				var width = data.maxWidth * data.rate;//矩形条图实际显示宽度
 				BACK_PATH = "M 0,0 L " + width + ",0 L " + width + ",7 L 0,7 L 0,0 z";
-                var white, back, mask, number; // 4 layer
+                var back, number;
 
-                white = new kity.Path().setPathData(MASK_PATH).fill('white');
                 back = new kity.Path().setPathData(BACK_PATH).setTranslate(0.5, 0.5);
-                mask = new kity.Path().setPathData(MASK_PATH).setOpacity(0.8).setTranslate(0.5, 0.5);
-				//var url = "file:///C:/Users/T440P/Documents/kityminder-core/bar.png";
-				//var bar = new kity.Image(url);
-				//bar.setWidth(100).setHeight(5).setX(0).setY(0);
 
                 number = new kity.Text()
-                    //.setX(this.width / 2 - 0.5)
 					.setX(width + 15)
 					.setY(3)
                     .setTextAnchor('middle')
@@ -74,24 +66,18 @@ define(function(require, exports, module) {
                     .fill('gray');
 
                 this.addShapes([back, number]);
-				//this.addShapes([mask, number]);
-                this.mask = mask;
                 this.back = back;
                 this.number = number;
             },
 
             setValue: function(value) {
                 var back = this.back,
-                    mask = this.mask,
                     number = this.number;
 
                 //var color = BAR_COLORS[value];
-				var color = ["#ff0000", "#3ebea5"];
+				var color = "#3ebea5";
 
-                if (color) {
-                    back.fill(color[1]);
-                    mask.fill(color[0]);
-                }
+                back.fill(color);
 
                 number.setContent(value);
             }
@@ -154,24 +140,17 @@ define(function(require, exports, module) {
                     update: function(icon, node, box) {
                         var data = node.getData(BAR_DATA).value;
                         var spaceLeft = node.getStyle('space-left'),
-							spaceTop = node.getStyle('space-top'),
                             x, y;
 
                         icon.setValue(data);
-                        //x = box.left - icon.width - spaceLeft;
-						//y = -icon.height / 2;
 						x = -4*spaceLeft - 2;
 						y = box.bottom + 10;
 
                         icon.setTranslate(x, y);
 
                         return new kity.Box({
-                            //x: x,
-                            //y: y,
 							x: 0,
 							y: 0,
-                            //width: icon.width,
-                            //height: icon.height
 							width: 0,
 							height: 0
                         });

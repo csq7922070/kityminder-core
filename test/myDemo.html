@@ -93,15 +93,40 @@
 			function zoomOut(){
 				km.execCommand("ZoomOut");
 			}
+
+			function setBackgroundColor(){
+				km.execCommand("Background", "rgb(238,243,246)");
+			}
+
+			function hand(){
+				km.execCommand("Hand");
+			}
+
+			function copyStyle(){
+				km.execCommand("CopyStyle");
+			}
+
+			function pasteStyle(){
+				km.execCommand("PasteStyle");
+			}
+
+			function appendSiblingNode(){
+				km.execCommand("AppendSiblingNode", "兄弟节点");
+			}
 		</script>
 	</head>
 	<body>
 		<button onclick="refreshMind()">refreshMind</button>
 		<button onclick="selectAll()">selectAll</button>
+		<button onclick="setBackgroundColor()">setBackgroundColor</button>
+		<button onclick="appendSiblingNode()">AppendSiblingNode</button>
 		<button onclick="appendChildNode()">appendChildNode</button>
 		<button onclick="addImage()">addImage</button>
 		<button onclick="zoomIn()">zoomIn</button>
 		<button onclick="zoomOut()">zoomOut</button>
+		<button onclick="hand()">Hand</button>
+		<button onclick="copyStyle()">CopyStyle</button>
+		<button onclick="pasteStyle()">PasteStyle</button>
 		<br />
 		<input id="priority" type="text" value="1"/>
 		<button onclick="setPriority()">setPriority</button>

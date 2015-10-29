@@ -4436,9 +4436,7 @@ _p[43] = {
             [ "#A3A3A3", "#515151" ], [ "#A3A3A3", "#515151" ], [ "#A3A3A3", "#515151" ] ];
             // hue from 1 to 5
             // jscs:disable maximumLineLength
-            //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
             var BACK_PATH = "M 0,0 L 100,0 L 100,7 L 0,7 L 0,0 z";
-            var MASK_PATH = "M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z";
             var BAR_DATA = "bar";
             // 进度图标的图形
             var barIcon = kity.createClass("barIcon", {
@@ -4461,29 +4459,18 @@ _p[43] = {
                     var width = data.maxWidth * data.rate;
                     //矩形条图实际显示宽度
                     BACK_PATH = "M 0,0 L " + width + ",0 L " + width + ",7 L 0,7 L 0,0 z";
-                    var white, back, mask, number;
-                    // 4 layer
-                    white = new kity.Path().setPathData(MASK_PATH).fill("white");
+                    var back, number;
                     back = new kity.Path().setPathData(BACK_PATH).setTranslate(.5, .5);
-                    mask = new kity.Path().setPathData(MASK_PATH).setOpacity(.8).setTranslate(.5, .5);
-                    //var url = "file:///C:/Users/T440P/Documents/kityminder-core/bar.png";
-                    //var bar = new kity.Image(url);
-                    //bar.setWidth(100).setHeight(5).setX(0).setY(0);
                     number = new kity.Text().setX(width + 15).setY(3).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(12).fill("gray");
                     this.addShapes([ back, number ]);
-                    //this.addShapes([mask, number]);
-                    this.mask = mask;
                     this.back = back;
                     this.number = number;
                 },
                 setValue: function(value) {
-                    var back = this.back, mask = this.mask, number = this.number;
+                    var back = this.back, number = this.number;
                     //var color = BAR_COLORS[value];
-                    var color = [ "#ff0000", "#3ebea5" ];
-                    if (color) {
-                        back.fill(color[1]);
-                        mask.fill(color[0]);
-                    }
+                    var color = "#3ebea5";
+                    back.fill(color);
                     number.setContent(value);
                 }
             });
@@ -4539,20 +4526,14 @@ _p[43] = {
                         },
                         update: function(icon, node, box) {
                             var data = node.getData(BAR_DATA).value;
-                            var spaceLeft = node.getStyle("space-left"), spaceTop = node.getStyle("space-top"), x, y;
+                            var spaceLeft = node.getStyle("space-left"), x, y;
                             icon.setValue(data);
-                            //x = box.left - icon.width - spaceLeft;
-                            //y = -icon.height / 2;
                             x = -4 * spaceLeft - 2;
                             y = box.bottom + 10;
                             icon.setTranslate(x, y);
                             return new kity.Box({
-                                //x: x,
-                                //y: y,
                                 x: 0,
                                 y: 0,
-                                //width: icon.width,
-                                //height: icon.height
                                 width: 0,
                                 height: 0
                             });
@@ -4851,11 +4832,6 @@ _p[46] = {
             [ "#A3A3A3", "#515151" ], [ "#A3A3A3", "#515151" ], [ "#A3A3A3", "#515151" ] ];
             // hue from 1 to 5
             // jscs:disable maximumLineLength
-            //var BACK_PATH = 'm0.5,11c0,-5.524862 4.475138,-10 10,-10c5.524862,0 10,4.475138 10,10c0,5.524862 -4.475138,10 -10,10c-5.524862,0 -10,-4.475138 -10,-10z';//1位数字的圆
-            //var BACK_PATH = 'm0.5,12c0,-5.977169 4.743785,-11 10.388888,-11l13.222222,0c5.6451,0 10.388889,5.022831 10.388889,11l0,-1c0,5.977169 -4.74379,11 -10.388889,11l-13.222222,0c-5.645103,0 -10.388888,-5.022831 -10.388888,-11l0,1z';//2位数字的圆角矩形
-            //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
-            var BACK_PATH = "M 10,0 l 10,0 a 10,10,0,1,1,0,20 l -10,0 a 10,10,0,1,1,0,-20z";
-            var MASK_PATH = "M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z";
             var CORNER_MARK_DATA = "cornerMark";
             // 进度图标的图形
             var CornerMarkIcon = kity.createClass("CornerMarkIcon", {
@@ -4870,42 +4846,33 @@ _p[46] = {
                     this.value = node.getData(CORNER_MARK_DATA);
                     this.length = this.value.length;
                     this.width = 10 * (this.length + 1);
+                    //圆或圆角矩形的宽度，1位数字用圆，2位及以上用圆角矩形
                     this.height = 20;
                 },
                 create: function() {
-                    var white, back, mask, number;
-                    // 4 layer
-                    white = new kity.Path().setPathData(MASK_PATH).fill("white");
-                    //back = new kity.Path().setPathData(BACK_PATH).setTranslate(0.5, 0.5);
-                    //back = new kity.Circle(10,10,10);
+                    var back, number;
                     if (this.length == 1) {
+                        //用圆形背景
                         back = new kity.Circle(10, 10, 10);
                     } else {
-                        //back = new kity.Rect(this.width,20,0,0);
+                        //用圆角矩形背景
                         var w = 10 * (this.length - 1);
+                        //圆角矩形中间直线部分宽度
                         BACK_PATH = "M 10,0 l " + w + ",0 a 10,10,0,1,1,0,20 l -" + w + ",0 a 10,10,0,1,1,0,-20z";
                         back = new kity.Path().setPathData(BACK_PATH);
                     }
-                    //mask = new kity.Path().setPathData(MASK_PATH).setOpacity(0.8).setTranslate(0.5, 0.5);
-                    console.log(this.width);
                     var nX = this.width / 2;
                     var nY = this.height / 2;
-                    // var nX = this.width / 2 + 8;
-                    // var nY = this.height / 2 + 2;
                     number = new kity.Text().setX(nX).setY(nY).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(16).fill("white");
                     this.addShapes([ back, number ]);
-                    //this.addShapes([mask, number]);
-                    this.mask = mask;
                     this.back = back;
                     this.number = number;
                 },
                 setValue: function(value) {
-                    var back = this.back, mask = this.mask, number = this.number;
+                    var back = this.back, number = this.number;
                     //var color = CORNER_MARK_COLORS[value];
-                    var color = [ "#d90000", "#d90000" ];
-                    if (color) {
-                        back.fill(color[1]);
-                    }
+                    var color = "#d90000";
+                    back.fill(color);
                     number.setContent(value);
                 }
             });
@@ -4956,15 +4923,9 @@ _p[46] = {
                         },
                         update: function(icon, node, box) {
                             var data = node.getData(CORNER_MARK_DATA);
-                            var spaceLeft = node.getStyle("space-left"), spaceTop = node.getStyle("space-top"), spaceRight = node.getStyle("space-right"), x, y;
-                            console.log("spaceRight:" + spaceRight);
+                            var spaceTop = node.getStyle("space-top"), x, y;
                             icon.setValue(data);
-                            //x = box.left - icon.width - spaceLeft;
-                            //y = -icon.height / 2;
-                            console.log(box.width);
-                            console.log(icon.width);
                             x = box.right + 20 - icon.width / 2;
-                            console.log("x:" + x);
                             y = -3 * spaceTop - icon.height / 2;
                             icon.setTranslate(x, y);
                             return new kity.Box({
