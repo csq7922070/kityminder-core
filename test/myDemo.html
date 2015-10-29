@@ -82,7 +82,8 @@
 
 			function setBar(){
 				var value = $("#bar").val();
-				km.execCommand("Bar", value);
+				value = parseInt(value);
+				km.execCommand("Bar", 100, value / 300, value);
 			}
 
 			function zoomIn(){

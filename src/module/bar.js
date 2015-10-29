@@ -26,7 +26,7 @@ define(function(require, exports, module) {
 
         // jscs:disable maximumLineLength
         //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
-		var BACK_PATH = 'm0.75,0.75l99,0l0,7l-99,0l0,-7z';
+		var BACK_PATH = 'M 0,0 L 100,0 L 100,7 L 0,7 L 0,0 z';
         var MASK_PATH = 'M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z';
 
         var BAR_DATA = 'bar';
@@ -35,10 +35,10 @@ define(function(require, exports, module) {
         var barIcon = kity.createClass('barIcon', {
             base: kity.Group,
 
-            constructor: function() {
+            constructor: function(node) {
                 this.callBase();
                 this.setSize(20);
-                this.create();
+                this.create(node);
                 this.setId(utils.uuid('node_bar'));
             },
 
@@ -47,7 +47,13 @@ define(function(require, exports, module) {
 				this.height = size;
             },
 
-            create: function() {
+            create: function(node) {
+				var data = node.getData(BAR_DATA);
+				if(data.rate > 1){
+					data.rate = 1;
+				}
+				var width = data.maxWidth * data.rate;//矩形条图实际显示宽度
+				BACK_PATH = "M 0,0 L " + width + ",0 L " + width + ",7 L 0,7 L 0,0 z";
                 var white, back, mask, number; // 4 layer
 
                 white = new kity.Path().setPathData(MASK_PATH).fill('white');
@@ -59,7 +65,7 @@ define(function(require, exports, module) {
 
                 number = new kity.Text()
                     //.setX(this.width / 2 - 0.5)
-					.setX(115)
+					.setX(width + 15)
 					.setY(3)
                     .setTextAnchor('middle')
                     .setVerticalAlign('middle')
@@ -103,10 +109,15 @@ define(function(require, exports, module) {
          */
         var barCommand = kity.createClass('SetbarCommand', {
             base: Command,
-            execute: function(km, value) {
+            execute: function(km, maxWidth, rate, value) {
+				var data = {
+					maxWidth: maxWidth,
+					rate: rate,
+					value: value
+				};
                 var nodes = km.getSelectedNodes();
                 for (var i = 0; i < nodes.length; i++) {
-                    nodes[i].setData(BAR_DATA, value || null).render();
+                    nodes[i].setData(BAR_DATA, data || null).render();
                 }
                 km.layout();
             },
@@ -133,7 +144,7 @@ define(function(require, exports, module) {
                     base: Renderer,
 
                     create: function(node) {
-                        return new barIcon();
+                        return new barIcon(node);
                     },
 
                     shouldRender: function(node) {
@@ -141,7 +152,7 @@ define(function(require, exports, module) {
                     },
 
                     update: function(icon, node, box) {
-                        var data = node.getData(BAR_DATA);
+                        var data = node.getData(BAR_DATA).value;
                         var spaceLeft = node.getStyle('space-left'),
 							spaceTop = node.getStyle('space-top'),
                             x, y;

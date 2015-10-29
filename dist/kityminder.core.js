@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityminder - v1.4.21 - 2015-10-28
+ * kityminder - v1.4.21 - 2015-10-29
  * https://github.com/fex-team/kityminder-core
  * GitHub: https://github.com/fex-team/kityminder-core.git 
  * Copyright (c) 2015 Baidu FEX; Licensed MIT
@@ -4437,23 +4437,30 @@ _p[43] = {
             // hue from 1 to 5
             // jscs:disable maximumLineLength
             //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
-            var BACK_PATH = "m0.75,0.75l99,0l0,7l-99,0l0,-7z";
+            var BACK_PATH = "M 0,0 L 100,0 L 100,7 L 0,7 L 0,0 z";
             var MASK_PATH = "M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z";
             var BAR_DATA = "bar";
             // 进度图标的图形
             var barIcon = kity.createClass("barIcon", {
                 base: kity.Group,
-                constructor: function() {
+                constructor: function(node) {
                     this.callBase();
                     this.setSize(20);
-                    this.create();
+                    this.create(node);
                     this.setId(utils.uuid("node_bar"));
                 },
                 setSize: function(size) {
                     this.width = size;
                     this.height = size;
                 },
-                create: function() {
+                create: function(node) {
+                    var data = node.getData(BAR_DATA);
+                    if (data.rate > 1) {
+                        data.rate = 1;
+                    }
+                    var width = data.maxWidth * data.rate;
+                    //矩形条图实际显示宽度
+                    BACK_PATH = "M 0,0 L " + width + ",0 L " + width + ",7 L 0,7 L 0,0 z";
                     var white, back, mask, number;
                     // 4 layer
                     white = new kity.Path().setPathData(MASK_PATH).fill("white");
@@ -4462,7 +4469,7 @@ _p[43] = {
                     //var url = "file:///C:/Users/T440P/Documents/kityminder-core/bar.png";
                     //var bar = new kity.Image(url);
                     //bar.setWidth(100).setHeight(5).setX(0).setY(0);
-                    number = new kity.Text().setX(115).setY(3).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(12).fill("gray");
+                    number = new kity.Text().setX(width + 15).setY(3).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(12).fill("gray");
                     this.addShapes([ back, number ]);
                     //this.addShapes([mask, number]);
                     this.mask = mask;
@@ -4492,10 +4499,15 @@ _p[43] = {
          */
             var barCommand = kity.createClass("SetbarCommand", {
                 base: Command,
-                execute: function(km, value) {
+                execute: function(km, maxWidth, rate, value) {
+                    var data = {
+                        maxWidth: maxWidth,
+                        rate: rate,
+                        value: value
+                    };
                     var nodes = km.getSelectedNodes();
                     for (var i = 0; i < nodes.length; i++) {
-                        nodes[i].setData(BAR_DATA, value || null).render();
+                        nodes[i].setData(BAR_DATA, data || null).render();
                     }
                     km.layout();
                 },
@@ -4520,13 +4532,13 @@ _p[43] = {
                     left: kity.createClass("barRenderer", {
                         base: Renderer,
                         create: function(node) {
-                            return new barIcon();
+                            return new barIcon(node);
                         },
                         shouldRender: function(node) {
                             return node.getData(BAR_DATA);
                         },
                         update: function(icon, node, box) {
-                            var data = node.getData(BAR_DATA);
+                            var data = node.getData(BAR_DATA).value;
                             var spaceLeft = node.getStyle("space-left"), spaceTop = node.getStyle("space-top"), x, y;
                             icon.setValue(data);
                             //x = box.left - icon.width - spaceLeft;
