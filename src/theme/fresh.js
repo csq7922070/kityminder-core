@@ -30,12 +30,12 @@ define(function(require, exports, module) {
             'main-space': 5,
 
             'sub-color': 'black',
-            'sub-background': 'transparent',
-            'sub-stroke': 'none',
-            'sub-font-size': 12,
-            'sub-padding': compat ? [3, 5] : [5, 10],
-            'sub-margin': compat ? [4, 8] : [15, 20],
-            'sub-radius': 5,
+            'sub-background': hsl(h, 33, 95),
+            'sub-stroke': hsl(h, 37, 60),
+            'sub-font-size': 14,
+            'sub-padding': [6, 20],
+            'sub-margin': compat ? 8 : 20,
+            'sub-radius': 3,
             'sub-space': 5,
 
             'connect-color': hsl(h, 37, 60),

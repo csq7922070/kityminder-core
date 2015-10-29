@@ -30,7 +30,7 @@ define(function(require, exports, module) {
             'main-shape': 'circle',
 
             'sub-color': '#333',
-            'sub-background': '#99ca6a',
+            'sub-background': '#a4c5c0',
             'sub-stroke': '#a4c5c0',
             'sub-font-size': 13,
             'sub-padding': 5,

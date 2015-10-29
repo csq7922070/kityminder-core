@@ -29,7 +29,7 @@ define(function(require, exports, module) {
             'main-shadow': 'rgba(0, 0, 0, .25)',
 
             'sub-color': 'white',
-            'sub-background': 'transparent',
+            'sub-background': '#ff0000',
             'sub-stroke': 'none',
             'sub-font-size': 12,
             'sub-padding': [5, 10],

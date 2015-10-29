@@ -22,7 +22,7 @@ define(function(require, exports, module) {
         },
 
         update: function(outline, node, box) {
-
+            //console.log(box.width);
             var shape = node.getStyle('shape');
 
             var paddingLeft = node.getStyle('padding-left'),
@@ -53,14 +53,16 @@ define(function(require, exports, module) {
             }
 
             var prefix = node.isSelected() ? (node.getMinder().isFocused() ? 'selected-' : 'blur-selected-') : '';
+            var background = node.getData('background') || node.getStyle(prefix + 'background') || node.getStyle('background');
+            console.log(background);
             outline
                 .setPosition(outlineBox.x, outlineBox.y)
                 .setSize(outlineBox.width, outlineBox.height)
                 .setRadius(radius)
-                .fill(node.getData('background') || node.getStyle(prefix + 'background') || node.getStyle('background'))
+                .fill(background)
                 .stroke(node.getStyle(prefix + 'stroke' || node.getStyle('stroke')),
                 node.getStyle(prefix + 'stroke-width'));
-
+            //console.log(outlineBox.width + "," + outlineBox.height);
             return new kity.Box(outlineBox);
         }
     });

@@ -2986,6 +2986,7 @@ _p[27] = {
                     for (i = 0; i < rendererCount; i++) {
                         // 获取延迟盒子数据
                         for (j = 0; j < nodes.length; j++) {
+                            //console.log(node.getStyle('padding-left'));
                             if (typeof lastBoxes[j] == "function") {
                                 lastBoxes[j] = lastBoxes[j]();
                             }
@@ -2994,6 +2995,7 @@ _p[27] = {
                             }
                         }
                         for (j = 0; j < nodes.length; j++) {
+                            //console.log(node.getStyle('padding-left'));
                             node = nodes[j];
                             renderer = node._renderers[i];
                             // 合并盒子
@@ -3003,6 +3005,7 @@ _p[27] = {
                             }
                             // 判断当前上下文是否应该渲染
                             //console.log(renderer);
+                            if (renderer.__KityClassName == "OutlineRenderer") {}
                             if (renderer.shouldRender(node)) {
                                 // 应该渲染，但是渲染图形没创建过，需要创建
                                 if (!renderer.getRenderShape()) {
@@ -6422,6 +6425,7 @@ _p[56] = {
                 return outline;
             },
             update: function(outline, node, box) {
+                //console.log(box.width);
                 var shape = node.getStyle("shape");
                 var paddingLeft = node.getStyle("padding-left"), paddingRight = node.getStyle("padding-right"), paddingTop = node.getStyle("padding-top"), paddingBottom = node.getStyle("padding-bottom");
                 var outlineBox = {
@@ -6441,7 +6445,10 @@ _p[56] = {
                     radius = outlineBox.width / 2;
                 }
                 var prefix = node.isSelected() ? node.getMinder().isFocused() ? "selected-" : "blur-selected-" : "";
-                outline.setPosition(outlineBox.x, outlineBox.y).setSize(outlineBox.width, outlineBox.height).setRadius(radius).fill(node.getData("background") || node.getStyle(prefix + "background") || node.getStyle("background")).stroke(node.getStyle(prefix + "stroke" || node.getStyle("stroke")), node.getStyle(prefix + "stroke-width"));
+                var background = node.getData("background") || node.getStyle(prefix + "background") || node.getStyle("background");
+                console.log(background);
+                outline.setPosition(outlineBox.x, outlineBox.y).setSize(outlineBox.width, outlineBox.height).setRadius(radius).fill(background).stroke(node.getStyle(prefix + "stroke" || node.getStyle("stroke")), node.getStyle(prefix + "stroke-width"));
+                //console.log(outlineBox.width + "," + outlineBox.height);
                 return new kity.Box(outlineBox);
             }
         });
@@ -8806,7 +8813,7 @@ _p[76] = {
                 "main-space": 5,
                 "main-shadow": "rgba(0, 0, 0, .25)",
                 "sub-color": "white",
-                "sub-background": "transparent",
+                "sub-background": "#ff0000",
                 "sub-stroke": "none",
                 "sub-font-size": 12,
                 "sub-padding": [ 5, 10 ],
@@ -8862,7 +8869,7 @@ _p[77] = {
             "main-space": 5,
             "main-shadow": "rgba(0, 0, 0, .25)",
             "sub-color": "black",
-            "sub-background": "white",
+            "sub-background": "#a4c5c0",
             "sub-stroke": "white",
             "sub-font-size": 12,
             "sub-padding": [ 5, 10 ],
@@ -8917,11 +8924,11 @@ _p[78] = {
                 "main-radius": 3,
                 "main-space": 5,
                 "sub-color": "black",
-                "sub-background": "transparent",
-                "sub-stroke": "none",
-                "sub-font-size": 12,
-                "sub-padding": compat ? [ 3, 5 ] : [ 5, 10 ],
-                "sub-margin": compat ? [ 4, 8 ] : [ 15, 20 ],
+                "sub-background": hsl(h, 33, 95),
+                "sub-stroke": hsl(h, 37, 60),
+                "sub-font-size": 14,
+                "sub-padding": [ 6, 20 ],
+                "sub-margin": compat ? 8 : 20,
                 "sub-radius": 5,
                 "sub-space": 5,
                 "connect-color": hsl(h, 37, 60),
@@ -8985,7 +8992,7 @@ _p[79] = {
                 "main-space": 5,
                 "main-shadow": "rgba(0, 0, 0, .25)",
                 "sub-color": "black",
-                "sub-background": "white",
+                "sub-background": "#a4c5c0",
                 "sub-stroke": "white",
                 "sub-font-size": 12,
                 "sub-padding": [ 5, 10 ],
@@ -9041,7 +9048,7 @@ _p[80] = {
                 "main-shadow": "rgba(0, 0, 0, .25)",
                 "main-shape": "circle",
                 "sub-color": "#333",
-                "sub-background": "#99ca6a",
+                "sub-background": "#a4c5c0",
                 "sub-stroke": "#a4c5c0",
                 "sub-font-size": 13,
                 "sub-padding": 5,

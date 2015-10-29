@@ -109,6 +109,7 @@ define(function(require, exports, module) {
 
                     // 获取延迟盒子数据
                     for (j = 0; j < nodes.length; j++) {
+                        //console.log(node.getStyle('padding-left'));
                         if (typeof(lastBoxes[j]) == 'function') {
                             lastBoxes[j] = lastBoxes[j]();
                         }
@@ -118,6 +119,7 @@ define(function(require, exports, module) {
                     }
 
                     for (j = 0; j < nodes.length; j++) {
+                        //console.log(node.getStyle('padding-left'));
                         node = nodes[j];
                         renderer = node._renderers[i];
 
@@ -129,8 +131,10 @@ define(function(require, exports, module) {
 
                         // 判断当前上下文是否应该渲染
                         //console.log(renderer);
+                        if(renderer.__KityClassName == "OutlineRenderer"){
+                            //console.log(node);
+                        }
                         if (renderer.shouldRender(node)) {
-
                             // 应该渲染，但是渲染图形没创建过，需要创建
                             if (!renderer.getRenderShape()) {
                                 renderer.setRenderShape(renderer.create(node));
