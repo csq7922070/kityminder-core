@@ -40,7 +40,7 @@ define(function(require, exports, module) {
             },
 
             setSize: function(node) {
-                this.value = node.getData(CORNER_MARK_DATA);
+                this.value = node.getData(CORNER_MARK_DATA).toString();
                 this.length = this.value.length;
                 this.width = 10 * (this.length + 1);//圆或圆角矩形的宽度，1位数字用圆，2位及以上用圆角矩形
 				this.height = 20;

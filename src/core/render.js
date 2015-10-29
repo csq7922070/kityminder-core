@@ -128,6 +128,7 @@ define(function(require, exports, module) {
                         }
 
                         // 判断当前上下文是否应该渲染
+                        //console.log(renderer);
                         if (renderer.shouldRender(node)) {
 
                             // 应该渲染，但是渲染图形没创建过，需要创建

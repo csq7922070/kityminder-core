@@ -3002,6 +3002,7 @@ _p[27] = {
                                 renderer.contentBox = lastBoxes[j];
                             }
                             // 判断当前上下文是否应该渲染
+                            //console.log(renderer);
                             if (renderer.shouldRender(node)) {
                                 // 应该渲染，但是渲染图形没创建过，需要创建
                                 if (!renderer.getRenderShape()) {
@@ -4461,7 +4462,7 @@ _p[43] = {
                     BACK_PATH = "M 0,0 L " + width + ",0 L " + width + ",7 L 0,7 L 0,0 z";
                     var back, number;
                     back = new kity.Path().setPathData(BACK_PATH).setTranslate(.5, .5);
-                    number = new kity.Text().setX(width + 15).setY(3).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(12).fill("gray");
+                    number = new kity.Text().setX(width + 15).setY(2.5).setTextAnchor("middle").setVerticalAlign("middle").setFontSize(12).fill("gray");
                     this.addShapes([ back, number ]);
                     this.back = back;
                     this.number = number;
@@ -4843,7 +4844,7 @@ _p[46] = {
                     this.setId(utils.uuid("node_cornerMark"));
                 },
                 setSize: function(node) {
-                    this.value = node.getData(CORNER_MARK_DATA);
+                    this.value = node.getData(CORNER_MARK_DATA).toString();
                     this.length = this.value.length;
                     this.width = 10 * (this.length + 1);
                     //圆或圆角矩形的宽度，1位数字用圆，2位及以上用圆角矩形
@@ -8624,7 +8625,8 @@ _p[70] = {
             },
             getConnect: function(node) {
                 if (node.getLevel() == 1) return "arc";
-                return "under";
+                // return 'under';
+                return "arc";
             }
         });
     }

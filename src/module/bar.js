@@ -58,7 +58,7 @@ define(function(require, exports, module) {
 
                 number = new kity.Text()
 					.setX(width + 15)
-					.setY(3)
+					.setY(2.5)
                     .setTextAnchor('middle')
                     .setVerticalAlign('middle')
                     //.setFontItalic(true)

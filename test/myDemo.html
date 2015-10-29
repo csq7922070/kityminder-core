@@ -35,13 +35,20 @@
 				var mindData = {
 					root: {
 						data: {
-							text: "Gridsum"
+							text: "Gridsum",
+							image: "file:///C:/Users/T440P/Documents/kityminder-core/bar.png",
+                			imageSize: { "width": 130, "height": 5 }
 						},
 						children: [
 							{
 								data: {text: "一级栏目"},
 								children: [
-									{data: {text: "二级栏目"}}
+									{
+										data: {text: "二级栏目"},
+										children: [
+											{data: {text:"三级栏目"}}
+										]
+									}
 								]
 							},
 							{data: {text: "一级栏目"}},
@@ -69,6 +76,7 @@
 
 			function setCornerMark(){
 				var value = $("#corner-mark").val();
+				value = parseInt(value);
 				km.execCommand("CornerMark", value);
 			}
 
@@ -143,21 +151,66 @@
 		                "text": "网站名称"
 		            },
 			        "children": [
-		                { "data": { "text": "新闻中心" } },
 		                { 
 		                	"data": { 
-		                		"text": "信息公开" 
+		                		"text": "新闻中心",
+		                		"cornerMark": 15,
+		                		"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.5,
+		                			"value": 150
+		                		}
+		                	} 
+		                },
+		                { 
+		                	"data": { 
+		                		"text": "信息公开",
+		                		"cornerMark": 1,
+		                		"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.3,
+		                			"value": 90
+		                		}
 		                	} ,
 		                	"children": [
-		                		{"data":{"text": "信息公开"}},
 		                		{
-		                			"data":{"text": "信息公开"},
+		                			"data":{
+	                					"text": "信息公开",
+	                					"cornerMark": 25,
+	                					"bar":{
+				                			"maxWidth": 100,
+				                			"rate": 0.2,
+				                			"value": 60
+				                		}
+		                			}
+		                		},
+		                		{
+		                			"data":{
+	                					"text": "信息公开",
+	                					"cornerMark": 35,
+	                					"bar":{
+				                			"maxWidth": 100,
+				                			"rate": 0.01,
+				                			"value": 3
+				                		}
+		                			},
 		                			"children":[
-		                				{"data":{"text": "三级栏目"}},
+		                				{
+		                					"data":{
+		                						"text": "三级栏目",
+		                						"cornerMark": 8,
+		                						"bar":{
+						                			"maxWidth": 100,
+						                			"rate": 1,
+						                			"value": 300
+						                		}
+		                					}
+		                				},
 		                				{"data":{"text": "三级栏目"}},
 		                				{"data":{"text": "三级栏目"}}
 		                			]
 		                		},
+		                		{"data":{"text": "信息公开"}},
 		                		{"data":{"text": "信息公开"}}
 		                	]
 		                },
@@ -168,10 +221,50 @@
 		                		{"data":{"text": "信息公开"}}
 		                	]
 		                },
-		                { "data": { "text": "信息公开" } },
-		                { "data": { "text": "新闻中心" } },
-		                { "data": { "text": "信息公开" } },
-		                { "data": { "text": "信息公开" } },
+		                { 
+		                	"data": {
+		                 		"text": "信息公开" ,
+	                			"cornerMark": 25,
+	                			"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.5,
+		                			"value": 150
+		                		}
+	                		} 
+	                	},
+		                { 
+		                	"data": {
+		                 		"text": "信息公开" ,
+	                			"cornerMark": 45,
+	                			"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.5,
+		                			"value": 150
+		                		}
+	                		} 
+	                	},
+		                { 
+		                	"data": {
+		                 		"text": "信息公开" ,
+	                			"cornerMark": 9,
+	                			"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.3,
+		                			"value": 90
+		                		}
+	                		} 
+	                	},
+		                { 
+		                	"data": {
+		                 		"text": "信息公开" ,
+	                			"cornerMark": 227,
+	                			"bar":{
+		                			"maxWidth": 100,
+		                			"rate": 0.9,
+		                			"value": 271
+		                		}
+	                		} 
+	                	},
 		                { "data": { "text": "信息公开" } }
 			        ]
         		}
