@@ -26,9 +26,9 @@ define(function(require, exports, module) {
 
         // jscs:disable maximumLineLength
 		//var BACK_PATH = 'm0.5,11c0,-5.524862 4.475138,-10 10,-10c5.524862,0 10,4.475138 10,10c0,5.524862 -4.475138,10 -10,10c-5.524862,0 -10,-4.475138 -10,-10z';//1位数字的圆
-		var BACK_PATH = 'm0.5,12c0,-5.977169 4.743785,-11 10.388888,-11l13.222222,0c5.6451,0 10.388889,5.022831 10.388889,11l0,-1c0,5.977169 -4.74379,11 -10.388889,11l-13.222222,0c-5.645103,0 -10.388888,-5.022831 -10.388888,-11l0,1z';//2位数字的圆角矩形
+		//var BACK_PATH = 'm0.5,12c0,-5.977169 4.743785,-11 10.388888,-11l13.222222,0c5.6451,0 10.388889,5.022831 10.388889,11l0,-1c0,5.977169 -4.74379,11 -10.388889,11l-13.222222,0c-5.645103,0 -10.388888,-5.022831 -10.388888,-11l0,1z';//2位数字的圆角矩形
         //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
-		//var BACK_PATH = 'm0.75,0.75l99,0l0,8l-99,0l0,-8z';
+		var BACK_PATH = 'M 10,0 l 10,0 a 10,10,0,1,1,0,20 l -10,0 a 10,10,0,1,1,0,-20z';
         var MASK_PATH = 'M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z';
 
         var CORNER_MARK_DATA = 'cornerMark';
@@ -37,29 +37,41 @@ define(function(require, exports, module) {
         var CornerMarkIcon = kity.createClass('CornerMarkIcon', {
             base: kity.Group,
 
-            constructor: function() {
+            constructor: function(node) {
                 this.callBase();
-                this.setSize(20);
+                this.setSize(node);
                 this.create();
                 this.setId(utils.uuid('node_cornerMark'));
             },
 
-            setSize: function(size) {
-                this.width = size;
-				this.height = size;
+            setSize: function(node) {
+                this.value = node.getData(CORNER_MARK_DATA);
+                this.length = this.value.length;
+                this.width = 10 * (this.length + 1);
+				this.height = 20;
             },
 
             create: function() {
                 var white, back, mask, number; // 4 layer
 
                 white = new kity.Path().setPathData(MASK_PATH).fill('white');
-                back = new kity.Path().setPathData(BACK_PATH).setTranslate(0.5, 0.5);
-                mask = new kity.Path().setPathData(MASK_PATH).setOpacity(0.8).setTranslate(0.5, 0.5);
+                //back = new kity.Path().setPathData(BACK_PATH).setTranslate(0.5, 0.5);
+				//back = new kity.Circle(10,10,10);
+                if(this.length == 1){
+                    back = new kity.Circle(10,10,10);
+                }else{
+                    //back = new kity.Rect(this.width,20,0,0);
+                    var w = 10 * (this.length - 1);
+                    BACK_PATH = "M 10,0 l " + w + ",0 a 10,10,0,1,1,0,20 l -" + w + ",0 a 10,10,0,1,1,0,-20z";
+                    back = new kity.Path().setPathData(BACK_PATH)
+                }
+                //mask = new kity.Path().setPathData(MASK_PATH).setOpacity(0.8).setTranslate(0.5, 0.5);
 
-				//var nX = this.width / 2 + 0.5;
-				//var nY = this.height / 2 + 0.5;
-				var nX = this.width / 2 + 8;
-				var nY = this.height / 2 + 2;
+                console.log(this.width);
+				var nX = this.width / 2;
+				var nY = this.height / 2;
+				// var nX = this.width / 2 + 8;
+				// var nY = this.height / 2 + 2;
                 number = new kity.Text()
                     .setX(nX)
 					.setY(nY)
@@ -86,7 +98,7 @@ define(function(require, exports, module) {
 
                 if (color) {
                     back.fill(color[1]);
-                    mask.fill(color[0]);
+                    //mask.fill(color[0]);
                 }
 
                 number.setContent(value);
@@ -135,7 +147,7 @@ define(function(require, exports, module) {
                     base: Renderer,
 
                     create: function(node) {
-                        return new CornerMarkIcon();
+                        return new CornerMarkIcon(node);
                     },
 
                     shouldRender: function(node) {
@@ -146,12 +158,17 @@ define(function(require, exports, module) {
                         var data = node.getData(CORNER_MARK_DATA);
                         var spaceLeft = node.getStyle('space-left'),
 							spaceTop = node.getStyle('space-top'),
+                            spaceRight = node.getStyle('space-right'),
                             x, y;
+                        console.log("spaceRight:"+spaceRight);
 
                         icon.setValue(data);
                         //x = box.left - icon.width - spaceLeft;
 						//y = -icon.height / 2;
-						x = box.right + icon.width / 2;
+                        console.log(box.width);
+                        console.log(icon.width);
+						x = box.right + 20 - icon.width / 2;
+                        console.log("x:"+x);
 						y = -3*spaceTop -icon.height/2;
 
                         icon.setTranslate(x, y);
