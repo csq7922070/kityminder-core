@@ -8,12 +8,12 @@ define(function(require, exports, module) {
     var Module = require('../core/module');
     var Renderer = require('../core/render');
 
-    Module.register('CornerMarkModule', function() {
+    Module.register('barModule', function() {
         var minder = this;
 
         // Designed by Akikonata
         // [MASK, BACK]
-        var CORNER_MARK_COLORS = [null, ['#FF1200', '#840023'], // 1 - red
+        var BAR_COLORS = [null, ['#FF1200', '#840023'], // 1 - red
             ['#0074FF', '#01467F'], // 2 - blue
             ['#00AF00', '#006300'], // 3 - green
             ['#FF962E', '#B25000'], // 4 - orange
@@ -25,23 +25,21 @@ define(function(require, exports, module) {
         ]; // hue from 1 to 5
 
         // jscs:disable maximumLineLength
-		//var BACK_PATH = 'm0.5,11c0,-5.524862 4.475138,-10 10,-10c5.524862,0 10,4.475138 10,10c0,5.524862 -4.475138,10 -10,10c-5.524862,0 -10,-4.475138 -10,-10z';//1位数字的圆
-		var BACK_PATH = 'm0.5,12c0,-5.977169 4.743785,-11 10.388888,-11l13.222222,0c5.6451,0 10.388889,5.022831 10.388889,11l0,-1c0,5.977169 -4.74379,11 -10.388889,11l-13.222222,0c-5.645103,0 -10.388888,-5.022831 -10.388888,-11l0,1z';//2位数字的圆角矩形
         //var BACK_PATH = 'M0,13c0,3.866,3.134,7,7,7h6c3.866,0,7-3.134,7-7V7H0V13z';
-		//var BACK_PATH = 'm0.75,0.75l99,0l0,8l-99,0l0,-8z';
+		var BACK_PATH = 'm0.75,0.75l99,0l0,7l-99,0l0,-7z';
         var MASK_PATH = 'M20,10c0,3.866-3.134,7-7,7H7c-3.866,0-7-3.134-7-7V7c0-3.866,3.134-7,7-7h6c3.866,0,7,3.134,7,7V10z';
 
-        var CORNER_MARK_DATA = 'cornerMark';
+        var BAR_DATA = 'bar';
 
         // 进度图标的图形
-        var CornerMarkIcon = kity.createClass('CornerMarkIcon', {
+        var barIcon = kity.createClass('barIcon', {
             base: kity.Group,
 
             constructor: function() {
                 this.callBase();
                 this.setSize(20);
                 this.create();
-                this.setId(utils.uuid('node_cornerMark'));
+                this.setId(utils.uuid('node_bar'));
             },
 
             setSize: function(size) {
@@ -55,19 +53,19 @@ define(function(require, exports, module) {
                 white = new kity.Path().setPathData(MASK_PATH).fill('white');
                 back = new kity.Path().setPathData(BACK_PATH).setTranslate(0.5, 0.5);
                 mask = new kity.Path().setPathData(MASK_PATH).setOpacity(0.8).setTranslate(0.5, 0.5);
+				//var url = "file:///C:/Users/T440P/Documents/kityminder-core/bar.png";
+				//var bar = new kity.Image(url);
+				//bar.setWidth(100).setHeight(5).setX(0).setY(0);
 
-				//var nX = this.width / 2 + 0.5;
-				//var nY = this.height / 2 + 0.5;
-				var nX = this.width / 2 + 8;
-				var nY = this.height / 2 + 2;
                 number = new kity.Text()
-                    .setX(nX)
-					.setY(nY)
+                    //.setX(this.width / 2 - 0.5)
+					.setX(115)
+					.setY(3)
                     .setTextAnchor('middle')
                     .setVerticalAlign('middle')
                     //.setFontItalic(true)
-                    .setFontSize(16)
-                    .fill('white');
+                    .setFontSize(12)
+                    .fill('gray');
 
                 this.addShapes([back, number]);
 				//this.addShapes([mask, number]);
@@ -81,8 +79,8 @@ define(function(require, exports, module) {
                     mask = this.mask,
                     number = this.number;
 
-                //var color = CORNER_MARK_COLORS[value];
-				var color = ["#d90000", "#d90000"];
+                //var color = BAR_COLORS[value];
+				var color = ["#ff0000", "#3ebea5"];
 
                 if (color) {
                     back.fill(color[1]);
@@ -94,7 +92,7 @@ define(function(require, exports, module) {
         });
 
         /**
-         * @command CornerMark
+         * @command bar
          * @description 设置节点的优先级信息
          * @param {number} value 要设置的优先级（添加一个优先级小图标）
          *     取值为 0 移除优先级信息；
@@ -103,12 +101,12 @@ define(function(require, exports, module) {
          *    0: 当前有选中的节点
          *   -1: 当前没有选中的节点
          */
-        var CornerMarkCommand = kity.createClass('SetCornerMarkCommand', {
+        var barCommand = kity.createClass('SetbarCommand', {
             base: Command,
             execute: function(km, value) {
                 var nodes = km.getSelectedNodes();
                 for (var i = 0; i < nodes.length; i++) {
-                    nodes[i].setData(CORNER_MARK_DATA, value || null).render();
+                    nodes[i].setData(BAR_DATA, value || null).render();
                 }
                 km.layout();
             },
@@ -116,7 +114,7 @@ define(function(require, exports, module) {
                 var nodes = km.getSelectedNodes();
                 var val;
                 for (var i = 0; i < nodes.length; i++) {
-                    val = nodes[i].getData(CORNER_MARK_DATA);
+                    val = nodes[i].getData(BAR_DATA);
                     if (val) break;
                 }
                 return val || null;
@@ -128,22 +126,22 @@ define(function(require, exports, module) {
         });
         return {
             'commands': {
-                'cornerMark': CornerMarkCommand
+                'bar': barCommand
             },
             'renderers': {
-                left: kity.createClass('CornerMarkRenderer', {
+                left: kity.createClass('barRenderer', {
                     base: Renderer,
 
                     create: function(node) {
-                        return new CornerMarkIcon();
+                        return new barIcon();
                     },
 
                     shouldRender: function(node) {
-                        return node.getData(CORNER_MARK_DATA);
+                        return node.getData(BAR_DATA);
                     },
 
                     update: function(icon, node, box) {
-                        var data = node.getData(CORNER_MARK_DATA);
+                        var data = node.getData(BAR_DATA);
                         var spaceLeft = node.getStyle('space-left'),
 							spaceTop = node.getStyle('space-top'),
                             x, y;
@@ -151,8 +149,8 @@ define(function(require, exports, module) {
                         icon.setValue(data);
                         //x = box.left - icon.width - spaceLeft;
 						//y = -icon.height / 2;
-						x = box.right + icon.width / 2;
-						y = -3*spaceTop -icon.height/2;
+						x = -4*spaceLeft - 2;
+						y = box.bottom + 10;
 
                         icon.setTranslate(x, y);
 

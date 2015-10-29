@@ -58,6 +58,7 @@ define(function(require, exports, module) {
     require('./module/outline');
     require('./module/priority');
 	require('./module/cornerMark');
+	require('./module/bar');
     require('./module/progress');
     require('./module/resource');
     require('./module/select');

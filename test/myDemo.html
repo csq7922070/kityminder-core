@@ -64,12 +64,12 @@
 
 			function setPriority(){
 				var value = $("#priority").val();
-				km.execCommand("priority", value);
+				km.execCommand("Priority", value);
 			}
 
 			function setCornerMark(){
 				var value = $("#corner-mark").val();
-				km.execCommand("cornerMark", value);
+				km.execCommand("CornerMark", value);
 			}
 
 			function appendChildNode(){
@@ -79,6 +79,19 @@
 			function addImage(){
 				km.execCommand("Image", "file:///C:/Users/T440P/Documents/kityminder-core/bar.png", "333");
 			}
+
+			function setBar(){
+				var value = $("#bar").val();
+				km.execCommand("Bar", value);
+			}
+
+			function zoomIn(){
+				km.execCommand("ZoomIn");
+			}
+
+			function zoomOut(){
+				km.execCommand("ZoomOut");
+			}
 		</script>
 	</head>
 	<body>
@@ -86,12 +99,17 @@
 		<button onclick="selectAll()">selectAll</button>
 		<button onclick="appendChildNode()">appendChildNode</button>
 		<button onclick="addImage()">addImage</button>
+		<button onclick="zoomIn()">zoomIn</button>
+		<button onclick="zoomOut()">zoomOut</button>
 		<br />
-		<input id="priority" type="text"/>
+		<input id="priority" type="text" value="1"/>
 		<button onclick="setPriority()">setPriority</button>
 		<br />
-		<input id="corner-mark" type="text"/>
+		<input id="corner-mark" type="text" value="23"/>
 		<button onclick="setCornerMark()">setCornerMark</button>
+		<br />
+		<input id="bar" type="text" value="234"/>
+		<button onclick="setBar()">setBar</button>
 		<div id="minder-container" type="application/kityminder" minder-data-type="json">
 			{
 	        	"root": {
